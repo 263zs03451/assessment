@@ -29,7 +29,10 @@ assessmentButton.addEventListener(
         'https://x.com/intent/tweet?button_hashtag=あなたのいいところ&ref_src=twsrc%5Etfw';
         anchor.setAttribute('href', hrefvalue); //属性hrefを追加
         anchor.setAttribute('class', 'twitter-hashtag-button');
-      　anchor.setAttribute('data-text', result); //診断結果を追加      
+      　anchor.setAttribute('data-text', result); //診断結果を追加
+    //自動でURLが投稿本文に含まれ、OGPカードが表示される。
+        anchor.setAttribute('data-url', 'https://263zs03451.github.io/assessment/assessment.html');
+        anchor.innerText = '#あなたのいいところ';
         anchor.innerText = '#あなたのいいところ'; //ボタンの文章
         tweetDivision.appendChild(anchor); //子要素としてanchorを追加。
 
