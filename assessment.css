@@ -1,16 +1,26 @@
-body {
-    background-color: #04a6eb;
-    color: #fdffff;
-    width: 500px;
-    margin-right: auto;
-    margin-left: auto;
-}
-button {
-  padding: 5px 20px;
-  background-color: #337ab7;
+body{
+  background-color: #1b0f89dd;
   color: #fdffff;
-  border-style: none;
-}
-input {
-  height: 20px;
-}
+  /*
+  中央に寄せてみる。
+　そのために要素の幅を指定して、
+　左右に margin（マージン=外側の余白）と呼ばれる
+　要素の外側の余白をあけてレイアウトしてみる。 
+*/
+  width: 500px; /*  幅　*/
+  margin-right: auto;
+  margin-left: auto;
+
+  button{
+    padding: 5px 20px; /* padding= 内側の余白　上下を 5px、
+    左右を 20px に設定　*/
+    background-color: #0b9934;
+    color: #fdffff;
+    border-style: none;  /* 境界線を表示しない */
+  }
+
+  input{
+    height: 20px; /* 高さ */
+  }
+
+  }

@@ -1,77 +1,58 @@
+/*
+'use strict'; は、宣言後の記述ミスをエラーとして表示してくれる
+機能を呼び出すための記述です。
+日本語では「厳格モードを使う」という意味です。
+変数のタイプエラーを検知してくれる。
+*/
 'use strict';
-const userNameInput = document.getElementById('userName');
+/*
+ボタンをクリックしたときの動作を追加。
+まず、名前の入力欄、診断するボタン、
+結果表示エリアなどの UI 部品を JavaScript から使えるように準備しておきます。
+*/
+const userNameInput = document.getElementById('user-name');
 const assessmentButton = document.getElementById('assessment');
 const resultDivision = document.getElementById('result-area');
 const tweetDivision = document.getElementById('tweet-area');
 
 assessmentButton.addEventListener(
   'click',
-  () => {
+  () => { //これはアロー関数　function 省略系　　function()　は無名関数
     const userName = userNameInput.value;
     if (userName.length === 0) {
       // 名前が空の時は処理を終了する
       return;
     }
+
     // 診断結果表示エリアの作成
-    resultDivision.innerText = ''; // divタグの空文字で上書きすることでクリアする
+    resultDivision.innerText = ''; // 結果エリアを空にする
+    const heading = document.createElement('h3'); //h3タグの作成
+    heading.innerText = '診断結果'; // タグの内側のテキストを設定
+    resultDivision.appendChild(heading);  // divタグの子要素として追加
 
-    //const header = document.createElement('h3'); // h3タグの作成
-    //header.innerText = '診断結果'; // タグの内側のテキスト設定
-    //resultDivision.appendChild(header); // divタグの子要素として追加
-    //const paragraph = document.createElement('p'); // pタグの作成
-    //const result = assessment(userName); // 診断結果の作成
-    //paragraph.innerText = result; // pタグの内部のテキストを設定
-    //resultDivision.appendChild(paragraph); // divタグの子要素としてpタグを追加
+    const paragraph = document.createElement('p');  // pタグの作成
+    const result = assessment(userName); // 診断結果を作成
+    paragraph.innerText = result; // pタグの内側のテキストを作成
+    resultDivision.appendChild(paragraph); // divタグの子要素として結果を表示
 
-    // headerDivision の作成
-    const headerDivision = document.createElement('div'); //divタグの作成
-    headerDivision.setAttribute('class', 'card-header text-bg-primary'); // BootStrap用の class 設定
-    headerDivision.innerText = '診断結果'; // タグの内側のテキスト設定
-
-    // bodyDivision の作成
-    const bodyDivision = document.createElement('div'); //divタグの作成
-    bodyDivision.setAttribute('class', 'card-body'); // BootStrap用の class 設定
-    
-    const paragraph = document.createElement('p'); // pタグの作成
-    paragraph.setAttribute('class', 'card-text'); // BootStrap用の class 設定
-    const result = assessment(userName); // 診断結果の作成
-    paragraph.innerText = result; // pタグの内部のテキストを設定
-    bodyDivision.appendChild(paragraph); // divタグの子要素としてpタグを追加
-
-    // resultDivision に Bootstrap のスタイルを適用する
-    resultDivision.setAttribute('class', 'card');
-
-    // headerDivision と bodyDivision を resultDivision に差し込む
-    resultDivision.appendChild(headerDivision);
-    resultDivision.appendChild(bodyDivision);
-    
-    // X投稿ボタンの作成
-    tweetDivision.innerText = ''; // divタグの空文字で上書きすることでクリアする
+  // ツイートエリアの作成 x投稿ボタンの作成
+    tweetDivision.innerText = ''; // Tweetのタグを空にする
     const anchor = document.createElement('a'); // aタグの作成
-    const hrefvalue =
+    const hrefValue =
       'https://x.com/intent/tweet?button_hashtag=' +
       encodeURIComponent('あなたのいいところ') +
       '&ref_src=twsrc%5Etfw';
-    anchor.setAttribute('href', hrefvalue); // 属性hrefを追加
+
+    anchor.setAttribute('href', hrefValue); // 属性　hrefを追加
     anchor.setAttribute('class', 'twitter-hashtag-button');
-    anchor.setAttribute('data-text', result); // 診断結果を追加
-    // 自動でURLが投稿本文に含まれ、OGPカードが表示される
-    anchor.setAttribute('data-url', 'https://263zs03451.github.io/assessment/assessment.html');
-    anchor.innerText = '#あなたのいいところ'; // ボタンの文章
-    tweetDivision.appendChild(anchor); // 子要素としてanchorを追加
+    anchor.setAttribute('data-text', result);
+    anchor.innerText = 'Tweet #あなたのいいところを投稿する';  // ボタンの文章
 
-    const script = document.createElement('script'); // scriptタグの作成
+    tweetDivision.appendChild(anchor);  // divの子要素として追加;
+
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-    tweetDivision.appendChild(script); // scriptの配下に追加
-  }
-);
-
-userNameInput.addEventListener(
-  'keydown', // キー入力
-  (event) => {
-    if (event.key === 'Enter') {
-      assessmentButton.dispatchEvent(new Event('click')); // clickイベントを実行する
-    }
+    tweetDivision.appendChild(script);
   }
 );
 
@@ -91,7 +72,7 @@ const answers = [
   '###userName###のいいところは好奇心です。新しいことに向かっていく###userName###の心構えが多くの人に魅力的に映ります。',
   '###userName###のいいところは気配りです。###userName###の配慮が多くの人を救っています。',
   '###userName###のいいところはそのすべてです。ありのままの###userName###自身がいいところなのです。',
-  '###userName###のいいところは自制心です。やばいと思ったときにしっかりと衝動を抑えられる###userName###が皆から評価されています。',
+  '###userName###のいいところは自制心です。やばいと思ったときにしっかりと衝動を抑えられる###userName###が皆から評価されています。'
 ];
 
 /**
@@ -100,16 +81,86 @@ const answers = [
  * @return {string} 診断結果
  */
 function assessment(userName) {
-  // 全文字コードの番号を取得して足し合わせる
-  let sumOfCharCode = 0; // 文字コードの合計を取っておく変数
+  // 全文字のコード番号を取得してそれを足し合わせる
+  let sumOfCharCode = 0;
   for (let i = 0; i < userName.length; i++) {
-    // 文字数回ループ
-    sumOfCharCode += userName.charCodeAt(i); // 合計を計算
+    sumOfCharCode = sumOfCharCode + userName.charCodeAt(i); //コード番号を1文字ずつ足す
   }
-  // 合計値を配列の要素数で余りを取ることで、配列の要素数のどれかを１つに割り当てる
-  const index = sumOfCharCode % answers.length;
-  let result = answers[index]; // 配列から答えを取得
 
+  // 文字のコード番号の合計を回答の数で割った余りで添字の数値を求める
+  // answers.length = 16 で　配列の数
+  const index = sumOfCharCode % answers.length;
+  let result = answers[index];
+
+//　###userName### をユーザの名前に置き換える
   result = result.replaceAll('###userName###', userName);
   return result;
 }
+/*
+あなたのいいところ診断で、
+テキストフィールド上で Enter が押された際にも診断をしてくれるように改良
+*/
+
+userNameInput.addEventListener(
+  `keydown`, // キー入力
+  (event) => {
+    if (event.code === 'Enter') { // 押されたキーがEventなら
+      assessmentButton.dispatchEvent(new Event(`click`))
+    }
+  }
+)
+
+// テストを行う関数
+function test() {
+  console.log('診断結果の文章のテスト');
+
+  //太郎
+  console.log('太郎');
+  console.assert(
+    assessment('太郎') ===
+    '太郎のいいところは決断力です。太郎がする決断にいつも助けられる人がいます。',
+    '診断結果の文言の特定の部分を名前に置き換える処理が正しくありません。'
+  );
+
+  //次郎
+  console.log('次郎');
+  console.assert(
+    assessment('次郎') ===
+    '次郎のいいところは自制心です。やばいと思ったときにしっかりと衝動を抑えられる次郎が皆から評価されています。',
+    '診断結果の文言の特定の部分を名前に置き換える処理が正しくありません。'
+  );
+
+  //花子
+  console.log('花子');
+  console.assert(
+    assessment('花子') ===
+    '花子のいいところはまなざしです。花子に見つめられた人は、気になって仕方がないでしょう。',
+    '診断結果の文言の特定の部分を名前に置き換える処理が正しくありません。'
+  );
+
+  console.log('診断結果の文章のテスト終了');
+
+  console.log('同じ名前なら、同じ結果を出力することのテスト');
+
+  console.log('太郎');
+  console.assert(
+    assessment('太郎') === assessment('太郎'),
+    '入力が同じ名前なら同じ診断結果を出力する処理が正しくありません。'
+  )
+
+  console.log('次郎');
+  console.assert(
+    assessment('次郎') === assessment('次郎'),
+    '入力が同じ名前なら同じ診断結果を出力する処理が正しくありません。'
+  )
+
+  console.log('花子');
+  console.assert(
+    assessment('花子') === assessment('花子'),
+    '入力が同じ名前なら同じ診断結果を出力する処理が正しくありません。'
+  )
+
+  console.log('同じ名前なら、同じ結果を出力することのテスト終了');
+}
+
+test();
